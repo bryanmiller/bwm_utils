@@ -1,4 +1,6 @@
 # From https://code.google.com/p/agpy/source/browse/trunk/agpy/posang.py
+# now at
+# https://github.com/keflavich/agpy/tree/master/agpy
 # Changes by Bryan Miller:
 #   2014jul22 - default system=radec
 #   2014jul22 - changed to ra2-ra1 so that sign matches posang.pro
@@ -53,3 +55,6 @@ if __name__ == "__main__":
     DC2 = 33.96100069
     print (posang(RA1,DC1,RA2,DC2))
     assert posang(RA1,DC1,RA2,DC2), 21.4522920312
+
+    print (posang(RA1,DC1,RA2,DC2,system='galactic'))
+
