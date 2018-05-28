@@ -9,8 +9,9 @@
 #  print posang.posang(RA1,DC1,RA2,DC2)
 #  21.4522920312
 
-from astropy import coordinates
+from astropy.coordinates import SkyCoord
 from numpy import pi,arctan2,sin,cos,tan
+# from astropy import units as u
 
 def posang(l1,b1,l2,b2,system='radec',units='degrees',**kwargs):
     """
@@ -21,15 +22,14 @@ def posang(l1,b1,l2,b2,system='radec',units='degrees',**kwargs):
     INPUT:
     longitude1, latitude1, longitude2, latitude2
 
-    Defaults to GALACTIC coordinates.  **kwargs are passed to coords.Position
     """
 
     if system.lower() == 'galactic':
-        pos1 = coordinates.Galactic(l1,b1,unit=('deg','deg'))
-        pos2 = coordinates.Galactic(l2,b2,unit=('deg','deg'))
+        pos1 = SkyCoord(l1,b1,unit=('deg','deg'),frame='galacitc')
+        pos2 = SkyCoord(l2,b2,unit=('deg','deg'),frame='galactic')
     elif system.lower() in ('radec','fk5','icrs'):
-        pos1 = coordinates.ICRS(l1,b1,unit=('deg','deg'))
-        pos2 = coordinates.ICRS(l2,b2,unit=('deg','deg'))
+        pos1 = SkyCoord(l1,b1,unit=('deg','deg'),frame='icrs')
+        pos2 = SkyCoord(l2,b2,unit=('deg','deg'),frame='icrs')
 
     ra1,dec1 = pos1.icrs.ra.deg,pos1.icrs.dec.deg
     ra2,dec2 = pos2.icrs.ra.deg,pos2.icrs.dec.deg
@@ -44,3 +44,12 @@ def posang(l1,b1,l2,b2,system='radec',units='degrees',**kwargs):
         return angle
     else:
         raise ValueError("Invalid units: %s" % units)
+
+if __name__ == "__main__":
+
+    RA1 = 66.15593384
+    DC1 = 33.95988843
+    RA2 = 66.15646079
+    DC2 = 33.96100069
+    print (posang(RA1,DC1,RA2,DC2))
+    assert posang(RA1,DC1,RA2,DC2), 21.4522920312
