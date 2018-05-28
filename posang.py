@@ -25,7 +25,7 @@ def posang(l1,b1,l2,b2,system='radec',units='degrees',**kwargs):
     """
 
     if system.lower() == 'galactic':
-        pos1 = SkyCoord(l1,b1,unit=('deg','deg'),frame='galacitc')
+        pos1 = SkyCoord(l1,b1,unit=('deg','deg'),frame='galactic')
         pos2 = SkyCoord(l2,b2,unit=('deg','deg'),frame='galactic')
     elif system.lower() in ('radec','fk5','icrs'):
         pos1 = SkyCoord(l1,b1,unit=('deg','deg'),frame='icrs')
