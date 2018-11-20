@@ -62,10 +62,23 @@ def sixty(dd):
         seconds = seconds if is_positive else -seconds
     return (degrees,minutes,seconds)
    
-def dec2sex(d,p=3,cutsec=False,hour=False,tohour=False,sep=':'):
-    # Convert decimal degrees/hours to a sexigesimal string
-    # From dec2sex.pro
-    # Bryan Miller
+def dec2sex(d,p=3, cutsec=False, hour=False, tohour=False,sep=':',leadzero=0, round=False):
+    """
+    Convert decimal degrees/hours to a formatted sexigesimal string
+    From dec2sex.pro
+    Bryan Miller
+
+    Parameters
+    :param d: input in degrees
+    :param p: digits for seconds
+    :param cutsec: Cut seconds, just display, e.g. DD:MM
+    :param hour: d is decimal hours, so must be <=24
+    :param tohour: convert from degress to hours (divide by 15.)
+    :param sep: Separator string
+    :param leadzero: if >0 display leading 0's, e.g. -05:25. The value is the number of digits for the DD or HR field.
+    :param round: when cutsec, round to the nearest minute rather than truncate
+    :return: string
+    """
     l_d = float(d)
     sign = ''
     sd = ''
@@ -93,13 +106,18 @@ def dec2sex(d,p=3,cutsec=False,hour=False,tohour=False,sep=':'):
     dg = abs(int(six[0]))
     if (six[0] < 0):
         sign = '-'
-    if dg >= 100:
-        ldg = 3
-    elif dg >= 10:
-        ldg = 2
+    # if dg >= 100:
+    #     ldg = 3
+    # elif dg >= 10:
+    #     ldg = 2
+    # else:
+    #     ldg = 1
+        
+    if leadzero > 0:
+        sldg = '0' + str(leadzero)
     else:
-        ldg = 1
-    
+        sldg = str(len(str(dg)))
+        
     mn = abs(int(six[1]))
     if (six[1] < 0):
         sign = '-'
@@ -109,22 +127,28 @@ def dec2sex(d,p=3,cutsec=False,hour=False,tohour=False,sep=':'):
         sign = '-'
 #    print sign,dg,mn,sc
  
-    if sc == 60.0:
-        sc = 0.0
+    if sc >= 60.0:
+        sc -= 60.0
         mn = mn + 1
- 
-    if mn == 60:
-        mn = 0
+
+    if cutsec:
+        if round and sc >= 30.:
+            # Round to the nearest minute, otherwise truncate
+            mn += 1
+        sc = 0.0
+
+    if mn >= 60:
+        mn -= 60
         dg = dg + 1
  
     if dg >= int(maxdg):
         dg = dg - int(maxdg)
          
     if cutsec and sc == 0.0:
-        fmt = '{:1s}{:'+str(ldg)+'d}'+sep+'{:02d}'
+        fmt = '{:1s}{:'+sldg+'d}'+sep+'{:02d}'
         s = fmt.format(sign,dg,mn)
     else:
-        fmt = '{:1s}{:'+str(ldg)+'d}'+sep+'{:02d}'+sep+secstr
+        fmt = '{:1s}{:'+sldg+'d}'+sep+'{:02d}'+sep+secstr
         s = fmt.format(sign,dg,mn,sc)
          
     return s.strip()
