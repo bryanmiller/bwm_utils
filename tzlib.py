@@ -16,7 +16,7 @@ class UTC(tzinfo):
     def tzname(self,dt):
         return "UTC"
     
-# Chilean time for 2013
+# Chilean tot_time for 2013
 class CLT(tzinfo):
     def utcoffset(self, dt):
         return  self.dst(dt) - timedelta(hours=4)

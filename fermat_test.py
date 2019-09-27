@@ -13,6 +13,8 @@ if __name__ == "__main__":
     parser.add_argument("-a", help="Scale factor", default=0.00045, type=float)
     parser.add_argument("-b", help="Number of spirals", default=1.0, type=float)
     parser.add_argument("-r", help="Random sigma", default=0.0, type=float)
+    parser.add_argument("-d", help="Dmax", default=0.0, type=float)
+    parser.add_argument("-p", help="2nd number of points", default=0, type=int)
     args = parser.parse_args()
 
 
@@ -24,6 +26,8 @@ if __name__ == "__main__":
     #b = 1.0
     b = args.b
     # print(a,b)
+    dmax = args.d
+    nnew = args.p
 
     # Sigma (arcsec) for normal randomization
     r = args.r
@@ -55,14 +59,18 @@ if __name__ == "__main__":
     plt.show()
 
     # Test scale
-    dmax = 300. # arcsec
-    anew = fermat_scale(n,dmax/3600.,b=b,theta=theta)
-    print('a({:7.2f}) = {:7.3f}'.format(dmax,anew))
-    x,y = fermat(n,a=anew,b=b,theta=theta)
+    if dmax == 0:
+        dmax = dist
+    if nnew == 0:
+        nnew = n
+    dmax = dist # arcsec
+    anew = fermat_scale(nnew,dmax/3600.,b=b,theta=theta)
+    print('a({:3d}, {:7.2f}) = {:7.3f}'.format(nnew,dmax,anew))
+    x,y = fermat(nnew,a=anew,b=b,theta=theta)
     # convert from degrees to arcsec
     x = 3600.*x
     y = 3600.*y
-    for ii in range(n):
+    for ii in range(nnew):
         x[ii] = x[ii] + r[ii,0]
         y[ii] = y[ii] + r[ii,1]
         offset = 0.0
