@@ -4,8 +4,9 @@
 from __future__ import print_function
 import sys
 
-def sex2dec(stime,todegree=False,sep=':'):
-    # stime is a string of format "HR:MIN:SEC"
+
+def sex2dec(stime, todegree=False, sep=':'):
+    # stime is a string of format "HR<sep>MIN<sep>SEC"
     # returns the decimal equivalent
     # Bryan Miller
     # From sex2dec.pro
@@ -33,7 +34,8 @@ def sex2dec(stime,todegree=False,sep=':'):
         exp = exp + 1
     return sign*f*result
 
-def dtsex2dec(datetime,todegree=False):
+
+def dtsex2dec(datetime, todegree=False):
     # input is a datetime object
     # Bryan Miller
     
@@ -45,6 +47,7 @@ def dtsex2dec(datetime,todegree=False):
     if datetime.hour < 0: 
         sign = -1.
     return sign*f*(abs(datetime.hour) + datetime.minute/60. + datetime.second/3600.)
+
 
 def sixty(dd):
     # http://stackoverflow.com/questions/2579535/how-to-convert-dd-to-dms-in-python
@@ -61,8 +64,9 @@ def sixty(dd):
     else:
         seconds = seconds if is_positive else -seconds
     return (degrees,minutes,seconds)
-   
-def dec2sex(d,p=3, cutsec=False, hour=False, tohour=False,sep=':',leadzero=0, round=False):
+
+
+def dec2sex(d, p=3, cutsec=False, hour=False, tohour=False,sep=':', leadzero=0, round=False):
     """
     Convert decimal degrees/hours to a formatted sexigesimal string
     From dec2sex.pro

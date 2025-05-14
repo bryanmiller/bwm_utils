@@ -49,15 +49,12 @@ def spherematch(ra1, dec1, ra2, dec2, tol=None, nnearest=1):
         larger than `ra1`/`dec1`.
     ds : float array
         Distance (in degrees) between the matches
-
-
-
     """
 
-    ra1 = np.array(ra1, copy=False)
-    dec1 = np.array(dec1, copy=False)
-    ra2 = np.array(ra2, copy=False)
-    dec2 = np.array(dec2, copy=False)
+    ra1 = np.asarray(ra1)
+    dec1 = np.asarray(dec1)
+    ra2 = np.asarray(ra2)
+    dec2 = np.asarray(dec2)
 
     if ra1.shape != dec1.shape:
         raise ValueError('ra1 and dec1 do not match!')
